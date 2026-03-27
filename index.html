@@ -385,24 +385,98 @@
     .footer-col a:hover { color: var(--white); }
     .footer-bottom { border-top: 1px solid var(--gray-800); padding-top: 24px; font-size: 13px; color: var(--gray-600); display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
 
+    /* ── HAMBURGER ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column; justify-content: center; gap: 5px;
+      width: 36px; height: 36px; cursor: pointer; padding: 6px;
+      border: none; background: transparent; border-radius: 6px;
+    }
+    .nav-hamburger span {
+      display: block; width: 20px; height: 2px;
+      background: var(--gray-700); border-radius: 2px;
+      transition: transform .25s, opacity .25s;
+    }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .nav-mobile-menu {
+      display: none;
+      position: fixed; top: 60px; left: 0; right: 0; z-index: 99;
+      background: var(--white); border-bottom: 1px solid var(--gray-200);
+      padding: 12px 20px 20px;
+      box-shadow: 0 8px 24px rgba(0,0,0,.08);
+    }
+    .nav-mobile-menu.open { display: block; }
+    .nav-mobile-menu a {
+      display: block; padding: 11px 4px;
+      font-size: 16px; font-weight: 500; color: var(--gray-700);
+      text-decoration: none; border-bottom: 1px solid var(--gray-100);
+      transition: color .15s;
+    }
+    .nav-mobile-menu a:last-child { border-bottom: none; padding-bottom: 0; }
+    .nav-mobile-menu a:hover { color: var(--blue); }
+
+    /* ── TABLE SCROLL WRAPPER ── */
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+
+    /* ── EQUATION SCROLL ── */
+    .equation { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; gap: 40px; padding: 120px 20px 60px; }
-      h1 { font-size: 36px; }
-      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 100px 20px 60px; }
+      h1 { font-size: 38px; }
+      h2 { font-size: 30px; }
+      section { padding: 72px 20px; }
+      .section-desc { margin-bottom: 40px; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
       .definition-grid { grid-template-columns: 1fr; }
       .components-grid { grid-template-columns: 1fr 1fr; }
       .component-card.span2 { grid-column: span 1; }
       .industry-grid { grid-template-columns: 1fr; }
       .quotes-grid { grid-template-columns: 1fr; }
-      .report-card { grid-template-columns: 1fr; }
-      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .report-card { grid-template-columns: 1fr; gap: 24px; padding: 32px; }
+      .footer-inner { grid-template-columns: 1fr; gap: 28px; }
       nav .nav-links { display: none; }
+      nav .nav-cta { display: none; }
+      .nav-hamburger { display: flex; }
+      /* Timeline: collapse 2-column layout */
+      .timeline-wrapper { grid-template-columns: 1fr !important; gap: 0 !important; }
+      .timeline-catalyst { margin-top: 40px; }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 640px) {
+      h1 { font-size: 32px; letter-spacing: -1px; }
+      h2 { font-size: 26px; }
+      section { padding: 56px 16px; }
+      nav { padding: 0 16px; }
+      .stats { padding: 48px 16px; }
+      .stat-num { font-size: 34px; }
       .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
       .components-grid { grid-template-columns: 1fr; }
-      h2 { font-size: 28px; }
+      .component-card.span2 { grid-column: span 1; }
+      .hero { padding: 88px 16px 48px; gap: 32px; }
+      .hero-sub { font-size: 16px; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions a { text-align: center; }
+      .hero-diagram { padding: 20px; font-size: 12px; }
+      .loop-level { flex-direction: column; gap: 8px; padding: 16px; }
+      .loop-level-num { width: auto; }
+      .report-card { padding: 24px; }
+      .report-card h3 { font-size: 22px; }
+      .report-actions { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+      .report-stat-num { font-size: 36px; }
+      .def-card { padding: 24px; }
+      .quote-text { font-size: 14px; }
+      .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+      .equation { font-size: 12px; padding: 16px 20px; }
+      .vs-table th, .vs-table td { padding: 12px 14px; font-size: 13px; }
+    }
+    @media (max-width: 400px) {
+      h1 { font-size: 28px; }
+      .stat-num { font-size: 28px; }
+      .stats-inner { gap: 16px; }
     }
   </style>
 </head>
@@ -419,7 +493,18 @@
     <li><a href="#report">完整报告</a></li>
   </ul>
   <a href="./REPORT.md" class="nav-cta">📖 完整报告</a>
+  <button class="nav-hamburger" id="hamburger" aria-label="菜单">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile-menu" id="mobileMenu">
+  <a href="#definition" onclick="closeMobileMenu()">定义</a>
+  <a href="#components" onclick="closeMobileMenu()">组件</a>
+  <a href="#timeline" onclick="closeMobileMenu()">起源</a>
+  <a href="#industry" onclick="closeMobileMenu()">工业实践</a>
+  <a href="#report" onclick="closeMobileMenu()">完整报告</a>
+  <a href="./REPORT.md" style="color:var(--blue);font-weight:600;margin-top:4px;">📖 完整报告</a>
+</div>
 
 <!-- HERO -->
 <section style="padding:0;">
@@ -514,6 +599,7 @@
 
     <h3 style="font-size:22px; font-weight:700; margin-bottom:20px; color:var(--black);">Framework vs Harness：本质区别</h3>
 
+    <div class="table-scroll">
     <table class="vs-table">
       <thead>
         <tr>
@@ -531,6 +617,7 @@
         <tr><td>代表产品</td><td>LangChain, CrewAI, AutoGen</td><td>Claude Agent SDK, Codex harness</td></tr>
       </tbody>
     </table>
+    </div>
 
     <p style="font-size:14px; color:var(--gray-500); margin-top:12px;">
       💡 关键：Harness 通常<em>使用</em> Framework。LangChain 自己的术语——LangChain = framework，LangGraph = runtime，DeepAgents = harness。
@@ -667,7 +754,7 @@
     <h2>从 Prompt 到 Harness</h2>
     <p class="section-desc">AI 工程实践的三个时代，每个时代都在解决上一个时代留下的问题。</p>
 
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+    <div class="timeline-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
       <div class="timeline">
         <div class="timeline-item dim">
           <div class="timeline-date">2024</div>
@@ -701,7 +788,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="timeline-catalyst">
         <h3 style="font-size:20px; font-weight:700; margin-bottom:24px;">催化剂：OpenAI 百万行代码实验</h3>
         <div style="background:var(--gray-900); border-radius:16px; padding:32px; color:var(--gray-300);">
           <div style="font-size:48px; font-weight:800; color:#3b82f6; letter-spacing:-2px; line-height:1; margin-bottom:8px;">1,000,000+</div>
@@ -882,5 +969,23 @@
   </div>
 </footer>
 
+<script>
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    const open = mobileMenu.classList.toggle('open');
+    hamburger.classList.toggle('open', open);
+  });
+  function closeMobileMenu() {
+    mobileMenu.classList.remove('open');
+    hamburger.classList.remove('open');
+  }
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+      closeMobileMenu();
+    }
+  });
+</script>
 </body>
 </html>
