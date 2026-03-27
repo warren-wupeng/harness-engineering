@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harness Engineering — AI Agent 基础设施工程</title>
+  <meta name="description" content="Harness Engineering 是 2026 年 AI Agent 领域的核心工程学科。了解什么是 Harness、7大核心组件、与 Framework 的本质区别，以及未来趋势。">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --gray-900: #111827;
+      --gray-800: #1f2937;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-400: #9ca3af;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --white: #ffffff;
+      --blue: #3b82f6;
+      --blue-dark: #1d4ed8;
+      --blue-light: #eff6ff;
+      --amber: #f59e0b;
+      --amber-light: #fffbeb;
+      --green: #10b981;
+      --green-light: #ecfdf5;
+      --purple: #8b5cf6;
+      --purple-light: #f5f3ff;
+      --pink: #ec4899;
+      --pink-light: #fdf2f8;
+      --font: 'Inter', -apple-system, sans-serif;
+      --mono: 'JetBrains Mono', monospace;
+      --radius: 12px;
+      --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 6px rgba(0,0,0,.07), 0 2px 4px rgba(0,0,0,.06);
+      --shadow-lg: 0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--white);
+      color: var(--gray-900);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 24px;
+      height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-weight: 700; font-size: 15px; color: var(--black);
+      display: flex; align-items: center; gap: 8px; text-decoration: none;
+    }
+    .nav-logo .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--blue); }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray-600); font-size: 14px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--black); }
+    .nav-cta {
+      background: var(--black); color: var(--white);
+      padding: 7px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      text-decoration: none; transition: opacity .2s;
+    }
+    .nav-cta:hover { opacity: .8; }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 140px 24px 100px;
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--blue-light); color: var(--blue-dark);
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .hero-badge .pulse {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--blue);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.3); }
+    }
+    h1 {
+      font-size: 52px; font-weight: 800; line-height: 1.1;
+      color: var(--black); margin-bottom: 20px;
+      letter-spacing: -1.5px;
+    }
+    h1 .highlight { color: var(--blue); }
+    .hero-sub {
+      font-size: 18px; color: var(--gray-600); line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--black); color: var(--white);
+      padding: 12px 24px; border-radius: var(--radius); font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: transform .15s, box-shadow .15s;
+      box-shadow: var(--shadow-md);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+    .btn-secondary {
+      background: var(--white); color: var(--gray-700); border: 1.5px solid var(--gray-200);
+      padding: 12px 24px; border-radius: var(--radius); font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: border-color .2s, color .2s;
+    }
+    .btn-secondary:hover { border-color: var(--gray-400); color: var(--black); }
+
+    /* Hero Diagram */
+    .hero-diagram {
+      background: var(--gray-900);
+      border-radius: 16px; padding: 32px;
+      font-family: var(--mono); font-size: 13px; line-height: 1.8;
+      color: var(--gray-400);
+      box-shadow: var(--shadow-lg);
+      position: relative; overflow: hidden;
+    }
+    .hero-diagram::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--blue), var(--purple), var(--pink));
+    }
+    .hero-diagram .comment { color: #6b7280; }
+    .hero-diagram .key { color: #93c5fd; }
+    .hero-diagram .value { color: #86efac; }
+    .hero-diagram .op { color: #fca5a5; }
+    .hero-diagram .string { color: #fde68a; }
+    .hero-diagram-header {
+      display: flex; gap: 6px; margin-bottom: 20px;
+    }
+    .hero-diagram-header span {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .hero-diagram-header .r { background: #ef4444; }
+    .hero-diagram-header .y { background: #f59e0b; }
+    .hero-diagram-header .g { background: #10b981; }
+
+    /* ── STATS ── */
+    .stats {
+      background: var(--gray-900);
+      padding: 60px 24px;
+    }
+    .stats-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: 42px; font-weight: 800; color: var(--white);
+      letter-spacing: -1px; line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-num span { color: var(--blue); }
+    .stat-label { font-size: 14px; color: var(--gray-400); font-weight: 500; }
+
+    /* ── SECTION ── */
+    section { padding: 100px 24px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 12px;
+    }
+    h2 {
+      font-size: 36px; font-weight: 800; color: var(--black);
+      letter-spacing: -0.8px; margin-bottom: 16px; line-height: 1.2;
+    }
+    .section-desc {
+      font-size: 17px; color: var(--gray-600); max-width: 600px; line-height: 1.7;
+      margin-bottom: 60px;
+    }
+
+    /* ── DEFINITION ── */
+    .definition-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 60px;
+    }
+    .def-card {
+      border-radius: 16px; padding: 32px; border: 1.5px solid var(--gray-200);
+      background: var(--white); box-shadow: var(--shadow);
+    }
+    .def-card.highlight-card {
+      background: var(--gray-900); border-color: transparent;
+      color: var(--white);
+    }
+    .def-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 16px; color: inherit; }
+    .def-card.highlight-card h3 { color: var(--white); }
+    .def-card p { font-size: 15px; color: var(--gray-600); line-height: 1.7; }
+    .def-card.highlight-card p { color: var(--gray-400); }
+    .def-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+    .def-icon.blue { background: var(--blue-light); }
+    .def-icon.amber { background: var(--amber-light); }
+
+    /* equation */
+    .equation {
+      background: var(--gray-900); border-radius: 12px; padding: 24px 32px;
+      font-family: var(--mono); font-size: 15px; color: var(--gray-400);
+      margin: 40px 0; border: 1px solid var(--gray-700);
+    }
+    .equation .line { margin: 4px 0; }
+    .equation .eq-key { color: #93c5fd; }
+    .equation .eq-val { color: #86efac; }
+    .equation .eq-plus { color: #fca5a5; }
+    .equation .eq-comment { color: #4b5563; }
+
+    /* vs table */
+    .vs-table { width: 100%; border-collapse: collapse; margin: 40px 0; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-md); }
+    .vs-table th { background: var(--gray-900); color: var(--white); padding: 16px 20px; text-align: left; font-size: 14px; font-weight: 600; }
+    .vs-table th:first-child { border-radius: 0; }
+    .vs-table td { padding: 14px 20px; font-size: 14px; color: var(--gray-700); border-bottom: 1px solid var(--gray-100); }
+    .vs-table tr:last-child td { border-bottom: none; }
+    .vs-table tr:hover td { background: var(--gray-100); }
+    .vs-table td:first-child { font-weight: 600; color: var(--gray-900); }
+    .tag-blue { background: var(--blue-light); color: var(--blue-dark); padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+    .tag-amber { background: var(--amber-light); color: #92400e; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+
+    /* ── COMPONENTS ── */
+    .components-section { background: var(--gray-100); }
+    .components-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .component-card {
+      background: var(--white); border-radius: 16px; padding: 28px;
+      border: 1.5px solid var(--gray-200); box-shadow: var(--shadow);
+      transition: transform .2s, box-shadow .2s;
+    }
+    .component-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+    .component-card.span2 { grid-column: span 2; }
+    .comp-num {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--gray-400);
+      margin-bottom: 12px;
+    }
+    .comp-icon { font-size: 28px; margin-bottom: 12px; }
+    .component-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: var(--black); }
+    .component-card p { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+    .comp-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; }
+    .comp-tag {
+      background: var(--gray-100); color: var(--gray-600);
+      padding: 3px 10px; border-radius: 6px; font-size: 12px; font-weight: 500;
+      font-family: var(--mono);
+    }
+
+    /* ── TIMELINE ── */
+    .timeline { position: relative; padding-left: 40px; margin: 40px 0; }
+    .timeline::before {
+      content: ''; position: absolute; left: 16px; top: 0; bottom: 0;
+      width: 2px; background: var(--gray-200);
+    }
+    .timeline-item { position: relative; margin-bottom: 40px; }
+    .timeline-item::before {
+      content: ''; position: absolute; left: -32px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--blue); border: 2px solid var(--white);
+      box-shadow: 0 0 0 3px var(--blue-light);
+    }
+    .timeline-item.dim::before { background: var(--gray-400); box-shadow: 0 0 0 3px var(--gray-200); }
+    .timeline-date { font-size: 12px; font-weight: 700; color: var(--blue); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+    .timeline-item.dim .timeline-date { color: var(--gray-400); }
+    .timeline-title { font-size: 17px; font-weight: 700; color: var(--black); margin-bottom: 6px; }
+    .timeline-desc { font-size: 14px; color: var(--gray-600); line-height: 1.6; }
+
+    /* ── INDUSTRY ── */
+    .industry-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .industry-card {
+      border-radius: 16px; padding: 32px; border: 1.5px solid var(--gray-200);
+      background: var(--white); box-shadow: var(--shadow);
+    }
+    .industry-logo {
+      font-size: 13px; font-weight: 700; letter-spacing: .5px;
+      padding: 6px 14px; border-radius: 8px; display: inline-block;
+      margin-bottom: 20px;
+    }
+    .industry-logo.anthropic { background: #fef3c7; color: #92400e; }
+    .industry-logo.openai { background: #d1fae5; color: #065f46; }
+    .industry-logo.langchain { background: #ede9fe; color: #5b21b6; }
+    .industry-logo.community { background: var(--gray-100); color: var(--gray-700); }
+    .industry-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--black); }
+    .industry-card p { font-size: 14px; color: var(--gray-600); line-height: 1.7; }
+    .industry-card ul { margin-top: 12px; padding-left: 18px; }
+    .industry-card li { font-size: 14px; color: var(--gray-600); line-height: 1.8; }
+
+    /* ── QUOTE ── */
+    .quote-section { background: var(--black); }
+    .quote-section h2 { color: var(--white); }
+    .quote-section .section-desc { color: var(--gray-400); }
+    .quotes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .quote-card {
+      background: var(--gray-800); border-radius: 16px; padding: 28px;
+      border: 1px solid var(--gray-700);
+    }
+    .quote-text {
+      font-size: 16px; font-style: italic; color: var(--white);
+      line-height: 1.7; margin-bottom: 20px;
+    }
+    .quote-text::before { content: '"'; color: var(--blue); font-size: 32px; line-height: 0; vertical-align: -10px; margin-right: 4px; }
+    .quote-source { font-size: 13px; color: var(--gray-400); font-weight: 500; }
+    .quote-source strong { color: var(--gray-200); }
+
+    /* ── COMPONENTS LOOP ── */
+    .loop-diagram {
+      background: var(--gray-900); border-radius: 16px; padding: 40px;
+      margin: 40px 0;
+    }
+    .loop-title { font-size: 13px; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
+    .loop-levels { display: flex; flex-direction: column; gap: 16px; }
+    .loop-level {
+      border-radius: 10px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .loop-level.outer { background: rgba(59,130,246,.15); border: 1px solid rgba(59,130,246,.3); }
+    .loop-level.middle { background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.3); }
+    .loop-level.inner { background: rgba(16,185,129,.15); border: 1px solid rgba(16,185,129,.3); }
+    .loop-level-num {
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+      width: 80px; flex-shrink: 0;
+    }
+    .outer .loop-level-num { color: #93c5fd; }
+    .middle .loop-level-num { color: #c4b5fd; }
+    .inner .loop-level-num { color: #6ee7b7; }
+    .loop-level-content h4 { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .loop-level-content p { font-size: 13px; color: var(--gray-400); }
+
+    /* ── REPORT SECTION ── */
+    .report-section { background: var(--blue-light); }
+    .report-card {
+      background: var(--white); border-radius: 20px; padding: 48px;
+      border: 1.5px solid var(--gray-200); box-shadow: var(--shadow-lg);
+      display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
+    }
+    .report-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--green-light); color: #065f46;
+      padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .report-card h3 { font-size: 28px; font-weight: 800; margin-bottom: 12px; color: var(--black); }
+    .report-card p { font-size: 16px; color: var(--gray-600); line-height: 1.7; }
+    .report-toc { margin-top: 24px; }
+    .report-toc-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--gray-100);
+      font-size: 14px; color: var(--gray-600);
+    }
+    .report-toc-item:last-child { border-bottom: none; }
+    .toc-num { width: 24px; height: 24px; border-radius: 6px; background: var(--blue-light); color: var(--blue-dark); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+    .report-actions { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .report-stat-num { font-size: 48px; font-weight: 800; color: var(--blue); letter-spacing: -2px; line-height: 1; text-align: center; }
+    .report-stat-label { font-size: 13px; color: var(--gray-500); text-align: center; margin-bottom: 20px; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black); color: var(--gray-400);
+      padding: 60px 24px 40px;
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px;
+      margin-bottom: 40px;
+    }
+    .footer-brand h3 { font-size: 18px; font-weight: 700; color: var(--white); margin-bottom: 12px; }
+    .footer-brand p { font-size: 14px; line-height: 1.7; color: var(--gray-500); }
+    .footer-col h4 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); margin-bottom: 16px; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 10px; }
+    .footer-col a { font-size: 14px; color: var(--gray-500); text-decoration: none; transition: color .2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid var(--gray-800); padding-top: 24px; font-size: 13px; color: var(--gray-600); display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 120px 20px 60px; }
+      h1 { font-size: 36px; }
+      .stats-inner { grid-template-columns: repeat(2, 1fr); }
+      .definition-grid { grid-template-columns: 1fr; }
+      .components-grid { grid-template-columns: 1fr 1fr; }
+      .component-card.span2 { grid-column: span 1; }
+      .industry-grid { grid-template-columns: 1fr; }
+      .quotes-grid { grid-template-columns: 1fr; }
+      .report-card { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      nav .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .stats-inner { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+      .components-grid { grid-template-columns: 1fr; }
+      h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo"><span class="dot"></span>Harness Engineering</a>
+  <ul class="nav-links">
+    <li><a href="#definition">定义</a></li>
+    <li><a href="#components">组件</a></li>
+    <li><a href="#timeline">起源</a></li>
+    <li><a href="#industry">工业实践</a></li>
+    <li><a href="#report">完整报告</a></li>
+  </ul>
+  <a href="./REPORT.md" class="nav-cta">📖 完整报告</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0;">
+  <div class="hero">
+    <div>
+      <div class="hero-badge"><span class="pulse"></span>2026 年最重要的 AI 工程概念</div>
+      <h1>Harness<br><span class="highlight">Engineering</span></h1>
+      <p class="hero-sub">
+        不是调 prompt，不是选框架。<br>
+        真正的 AI Agent 工程，是<strong>造缰绳</strong>——<br>
+        设计让模型可靠工作的基础设施。
+      </p>
+      <div class="hero-actions">
+        <a href="#definition" class="btn-primary">开始了解 →</a>
+        <a href="./REPORT.md" class="btn-secondary">📖 完整研究报告</a>
+      </div>
+    </div>
+    <div class="hero-diagram">
+      <div class="hero-diagram-header">
+        <span class="r"></span><span class="y"></span><span class="g"></span>
+      </div>
+      <div class="comment"># The fundamental equation</div>
+      <br>
+      <div><span class="key">Agent</span> <span class="op">=</span> <span class="value">Model</span></div>
+      <div class="comment"># The trained neural network itself</div>
+      <br>
+      <div><span class="key">Harness</span> <span class="op">=</span></div>
+      <div>&nbsp;&nbsp;<span class="string">Tools</span> <span class="op">+</span></div>
+      <div>&nbsp;&nbsp;<span class="string">Knowledge</span> <span class="op">+</span></div>
+      <div>&nbsp;&nbsp;<span class="string">Observation</span> <span class="op">+</span></div>
+      <div>&nbsp;&nbsp;<span class="string">Action Interfaces</span> <span class="op">+</span></div>
+      <div>&nbsp;&nbsp;<span class="string">Permissions</span></div>
+      <br>
+      <div class="comment"># What engineers actually build</div>
+      <br>
+      <div><span class="key">Reliable Agent</span> <span class="op">=</span></div>
+      <div>&nbsp;&nbsp;<span class="value">Model</span> <span class="op">+</span> <span class="string">Harness</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num"><span>1M</span>+</div>
+      <div class="stat-label">OpenAI 百万行代码实验<br>零行人工编写</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>2–5</span>×</div>
+      <div class="stat-label">Harness Engineering<br>可靠性提升倍数</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num"><span>80</span>%</div>
+      <div class="stat-label">vs 仅 Prompt Engineering<br>可靠性提升差距</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">Feb<span>'26</span></div>
+      <div class="stat-label">概念正式形成时间<br>Mitchell Hashimoto</div>
+    </div>
+  </div>
+</div>
+
+<!-- DEFINITION -->
+<section id="definition">
+  <div class="section-inner">
+    <div class="section-tag">核心概念</div>
+    <h2>什么是 Harness Engineering？</h2>
+    <p class="section-desc">
+      Harness Engineering 是设计、构建和运维<strong>围绕 AI 模型的基础设施</strong>的工程学科，确保 agent 在生产环境中可靠、一致、大规模运行。
+    </p>
+
+    <div class="definition-grid">
+      <div class="def-card highlight-card">
+        <div class="def-icon amber">🐎</div>
+        <h3>缰绳隐喻</h3>
+        <p>模型是马——强大但不可预测。Harness 是缰绳、马鞍、嚼子，引导这股力量做有用的工作，而不是让它到处乱跑。工程师是骑手，提供方向。</p>
+      </div>
+      <div class="def-card">
+        <div class="def-icon blue">🧠</div>
+        <h3>核心区分</h3>
+        <p>Agent 是那个被训练出来的神经网络本身。工程师不是在"造 Agent"，而是在给 Agent 搭建运作环境。模型提供智能，Harness 提供双手、眼睛和工作空间。</p>
+      </div>
+    </div>
+
+    <div class="equation">
+      <div class="line"><span class="eq-comment"># Fundamental equation of agentic systems</span></div>
+      <div class="line"><span class="eq-key">Agent</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="eq-plus">=</span> <span class="eq-val">Model</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="eq-comment"># the trained neural network</span></div>
+      <div class="line"><span class="eq-key">Harness</span> <span class="eq-plus">=</span> <span class="eq-val">Tools</span> <span class="eq-plus">+</span> <span class="eq-val">Knowledge</span> <span class="eq-plus">+</span> <span class="eq-val">Observation</span> <span class="eq-plus">+</span> <span class="eq-val">Actions</span> <span class="eq-plus">+</span> <span class="eq-val">Permissions</span></div>
+      <div class="line"><span class="eq-comment"># — shareAI-lab / learn-claude-code</span></div>
+    </div>
+
+    <h3 style="font-size:22px; font-weight:700; margin-bottom:20px; color:var(--black);">Framework vs Harness：本质区别</h3>
+
+    <table class="vs-table">
+      <thead>
+        <tr>
+          <th>维度</th>
+          <th><span class="tag-amber">Agent Framework</span></th>
+          <th><span class="tag-blue">Agent Harness</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>主要角色</td><td>提供构建 agent 的库和抽象</td><td>提供执行 agent 的运行时基础设施</td></tr>
+        <tr><td>类比</td><td>蓝图 / 建筑材料</td><td>工厂车间 / 操作系统</td></tr>
+        <tr><td>设计哲学</td><td>高度模块化，用户自由组装</td><td>强主张（opinionated），内置决策</td></tr>
+        <tr><td>状态管理</td><td>通常无状态或轻量状态</td><td>持久化状态，跨会话恢复</td></tr>
+        <tr><td>安全控制</td><td>提供工具，不强制治理</td><td>内置策略、工具访问中介、安全边界</td></tr>
+        <tr><td>代表产品</td><td>LangChain, CrewAI, AutoGen</td><td>Claude Agent SDK, Codex harness</td></tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:14px; color:var(--gray-500); margin-top:12px;">
+      💡 关键：Harness 通常<em>使用</em> Framework。LangChain 自己的术语——LangChain = framework，LangGraph = runtime，DeepAgents = harness。
+    </p>
+  </div>
+</section>
+
+<!-- COMPONENTS -->
+<section id="components" class="components-section">
+  <div class="section-inner">
+    <div class="section-tag">核心架构</div>
+    <h2>Harness 的 7 大核心组件</h2>
+    <p class="section-desc">
+      一个生产级 agent harness 需要覆盖 7 个维度。每个维度都在解决模型本身无法解决的问题。
+    </p>
+
+    <div class="components-grid">
+      <div class="component-card">
+        <div class="comp-num">01</div>
+        <div class="comp-icon">📋</div>
+        <h3>Context Management</h3>
+        <p>管理 agent 看到什么、记住什么。包括工作上下文（当前 turn）、会话状态（当前任务）、长期记忆（跨任务）和上下文压缩策略。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">working-context</span>
+          <span class="comp-tag">session-state</span>
+          <span class="comp-tag">RAG</span>
+          <span class="comp-tag">compaction</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="comp-num">02</div>
+        <div class="comp-icon">🔧</div>
+        <h3>Tool Orchestration</h3>
+        <p>管理工具的访问和执行。包括受控访问（文件系统、API、shell、数据库）、参数验证、沙箱执行和输出净化。工具应设计为原子操作。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">tool-use</span>
+          <span class="comp-tag">sandboxing</span>
+          <span class="comp-tag">MCP</span>
+          <span class="comp-tag">atomic-design</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="comp-num">03</div>
+        <div class="comp-icon">✅</div>
+        <h3>Verification Loops</h3>
+        <p>确保输出质量的护栏机制。结合确定性规则（linters、CI/CD）和 AI 驱动验证（agents 审查 agents）。将失败视为系统问题永久修复。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">linting</span>
+          <span class="comp-tag">pre-commit</span>
+          <span class="comp-tag">agent-review</span>
+          <span class="comp-tag">error-recovery</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="comp-num">04</div>
+        <div class="comp-icon">💾</div>
+        <h3>Memory Persistence</h3>
+        <p>跨步骤和会话的状态持久化。包括进度追踪（JSON/文件）、会话恢复（中断后继续）和语义检索（RAG 模式）。解决"AI 失忆"问题。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">progress.json</span>
+          <span class="comp-tag">session-recovery</span>
+          <span class="comp-tag">vector-store</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="comp-num">05</div>
+        <div class="comp-icon">📊</div>
+        <h3>Observability</h3>
+        <p>追踪每次工具调用、决策和 token 使用。聚类错误模式识别系统问题。监控成本，实现 KV-cache 优化（可降低 10x 成本）。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">logging</span>
+          <span class="comp-tag">metrics</span>
+          <span class="comp-tag">cost-control</span>
+          <span class="comp-tag">LangSmith</span>
+        </div>
+      </div>
+
+      <div class="component-card">
+        <div class="comp-num">06</div>
+        <div class="comp-icon">🔒</div>
+        <h3>Safety & HITL</h3>
+        <p>人机交互控制和安全机制。操作分类为安全/中等/危险三级。关键操作需人类批准。提供受控升级机制。</p>
+        <div class="comp-tags">
+          <span class="comp-tag">risk-classification</span>
+          <span class="comp-tag">approval-gates</span>
+          <span class="comp-tag">human-in-loop</span>
+        </div>
+      </div>
+
+      <div class="component-card span2">
+        <div class="comp-num">07</div>
+        <div class="comp-icon">🏗️</div>
+        <h3>Architectural Patterns — 三层循环模型</h3>
+        <p>社区广泛采用的标准心智模型，将 harness 设计分为三个嵌套循环：</p>
+        <div class="loop-diagram" style="margin-top:20px;">
+          <div class="loop-title">The Three-Loop Architecture</div>
+          <div class="loop-levels">
+            <div class="loop-level outer">
+              <div class="loop-level-num">Outer Loop</div>
+              <div class="loop-level-content">
+                <h4>Project Level — 项目级</h4>
+                <p>捕获意图（规格、架构文档、知识库）+ 治理机制（防止代码库腐化）</p>
+              </div>
+            </div>
+            <div class="loop-level middle">
+              <div class="loop-level-num">Middle Loop</div>
+              <div class="loop-level-content">
+                <h4>Orchestration Level — 功能级</h4>
+                <p>每个 feature 需要完整计划（需求、设计、任务拆解），验证通过后再进入下一任务</p>
+              </div>
+            </div>
+            <div class="loop-level inner">
+              <div class="loop-level-num">Inner Loop</div>
+              <div class="loop-level-content">
+                <h4>Task Level — 任务级</h4>
+                <p>写代码 → 验证 → 错误反馈 → 重试。这个循环的结构决定了 agent 是输出可工作代码还是"自信的垃圾"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="section-inner">
+    <div class="section-tag">历史演进</div>
+    <h2>从 Prompt 到 Harness</h2>
+    <p class="section-desc">AI 工程实践的三个时代，每个时代都在解决上一个时代留下的问题。</p>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
+      <div class="timeline">
+        <div class="timeline-item dim">
+          <div class="timeline-date">2024</div>
+          <div class="timeline-title">Prompt Engineering 时代</div>
+          <div class="timeline-desc">优化单次输入提示词。有效但局限——无法解决 agent 在多步骤任务中的可靠性问题。</div>
+        </div>
+        <div class="timeline-item dim">
+          <div class="timeline-date">2025 年中</div>
+          <div class="timeline-title">Context Engineering 时代</div>
+          <div class="timeline-desc">Karpathy 等人推广，LangChain + Anthropic 正式定义。通过 RAG、MCP、记忆和动态注入管理 agent 看到什么。成为 Harness 的一个组件。</div>
+        </div>
+        <div class="timeline-item dim">
+          <div class="timeline-date">2025 年末</div>
+          <div class="timeline-title">隐式实践阶段</div>
+          <div class="timeline-desc">AutoGPT、Codex 等系统中已存在 harness 组件，但尚无统一术语。Reddit r/AI_Agents 开始讨论 "agent harness" 概念（2025/12/20）。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026 年 2 月</div>
+          <div class="timeline-title">概念正式化</div>
+          <div class="timeline-desc"><strong>Mitchell Hashimoto</strong>（HashiCorp 联合创始人）博客文章 "Engineer the Harness" 正式命名。<strong>OpenAI</strong> 发布 "Harness engineering: leveraging Codex in an agent-first world"，披露百万行代码实验。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026 年 3 月</div>
+          <div class="timeline-title">系统化阶段（当前）</div>
+          <div class="timeline-desc">Martin Fowler 撰文讨论。清华+哈工大发表 arXiv:2603.25723 论文将其学术形式化。社区工具生态涌现（Lore、Desloppify 等）。Reddit/HN 热烈讨论，"2026 = Harness Engineering" 成为社区共识。</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-date">2026–2027</div>
+          <div class="timeline-title">标准化预测</div>
+          <div class="timeline-desc">AaaS 平台、Semantic Graphs、模型商品化。Harness 成为主要工程产物，模型仅是其中的商品组件。</div>
+        </div>
+      </div>
+
+      <div>
+        <h3 style="font-size:20px; font-weight:700; margin-bottom:24px;">催化剂：OpenAI 百万行代码实验</h3>
+        <div style="background:var(--gray-900); border-radius:16px; padding:32px; color:var(--gray-300);">
+          <div style="font-size:48px; font-weight:800; color:#3b82f6; letter-spacing:-2px; line-height:1; margin-bottom:8px;">1,000,000+</div>
+          <div style="font-size:14px; color:var(--gray-400); margin-bottom:24px;">Lines of code — zero manually written</div>
+          <div style="font-size:14px; line-height:1.8; color:var(--gray-400);">
+            <p style="margin-bottom:12px;">OpenAI 在 2026 年初用 Codex 生成了约 100 万行代码——包括应用逻辑、基础设施、工具链、文档和内部开发工具。</p>
+            <p style="margin-bottom:12px;"><strong style="color:var(--gray-200);">连 AGENTS.md 指导文件本身都是 Codex 写的。</strong></p>
+            <p>核心洞察：模型能力已不再是瓶颈。框架设计——Harness——才是决定 agent 能否在生产中成功的关键。</p>
+          </div>
+        </div>
+
+        <div style="margin-top:24px; background:var(--amber-light); border-radius:12px; padding:24px; border: 1px solid #fde68a;">
+          <div style="font-size:13px; font-weight:700; color:#92400e; margin-bottom:8px;">关键量化数据</div>
+          <div style="font-size:14px; color:#78350f; line-height:1.8;">
+            仅改进 Harness 设计（不改变模型权重）：<br>
+            <strong>编码 benchmark 准确率：6.7% → 68.3%</strong><br>
+            <span style="color:#92400e;">（Can.ac + LangChain 实验）</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY -->
+<section id="industry" style="background:var(--gray-100);">
+  <div class="section-inner">
+    <div class="section-tag">工业实践</div>
+    <h2>主要机构的 Harness 实践</h2>
+    <p class="section-desc">Anthropic、OpenAI、LangChain 等机构如何定义和实现 Harness 工程。</p>
+
+    <div class="industry-grid">
+      <div class="industry-card">
+        <div class="industry-logo anthropic">Anthropic</div>
+        <h3>Claude Agent SDK</h3>
+        <p>Anthropic 通过两个核心实践体现 Harness Engineering：</p>
+        <ul>
+          <li><strong>Effective Harnesses for Long-Running Agents</strong>（2025/11 工程博客）— Initializer/Coding-Agent 模式，使用 <code>claude-progress.txt</code> 在会话间交接</li>
+          <li><strong>MCP (Model Context Protocol)</strong> — 连接 agent 到工具、数据源、工作流的标准协议，现已成为跨厂商开放标准</li>
+          <li><strong>Claude Agent SDK</strong>（原 Claude Code SDK）— 高层 harness，自动处理工具编排和安全控制</li>
+        </ul>
+      </div>
+
+      <div class="industry-card">
+        <div class="industry-logo openai">OpenAI</div>
+        <h3>Codex Harness + App Server</h3>
+        <p>OpenAI 最完整地体现了 Harness Engineering 理念：</p>
+        <ul>
+          <li><strong>Codex Harness</strong> — 驱动所有 Codex 体验（web、CLI、IDE、macOS app）的核心逻辑和 agent loop</li>
+          <li><strong>Codex App Server</strong> — 双向 JSON-RPC 1.0 API，三个核心原语：Item（原子单元）/ Turn（工作单元）/ Thread（持久化会话）</li>
+          <li><strong>Harness 定义</strong>：将脚手架、反馈循环、文档和架构约束编码为机器可读的工件</li>
+        </ul>
+      </div>
+
+      <div class="industry-card">
+        <div class="industry-logo langchain">LangChain</div>
+        <h3>Framework → Runtime → Harness</h3>
+        <p>LangChain 最清晰地区分了三个层次：</p>
+        <ul>
+          <li><strong>LangChain</strong> = Agent Framework（构建工具/蓝图）</li>
+          <li><strong>LangGraph</strong> = Agent Runtime（执行运行时）</li>
+          <li><strong>DeepAgents</strong> = Agent Harness（强主张、内置决策的完整系统）</li>
+          <li><em>"Agent = Model + Harness"</em>是 LangChain 官方博客的核心方程</li>
+        </ul>
+      </div>
+
+      <div class="industry-card">
+        <div class="industry-logo community">社区 & 学术</div>
+        <h3>学术论文与开源生态</h3>
+        <p>学术界和社区的重要进展：</p>
+        <ul>
+          <li><strong>arXiv:2603.25723</strong>（清华 + 哈工大，2026/03/26）— "Natural-Language Agent Harnesses"，将 harness 行为外化为可移植的自然语言工件</li>
+          <li><strong>Lore</strong> — 持久化跨会话知识库（Claude Code/Cursor/OpenCode）</li>
+          <li><strong>Desloppify</strong> — 保持 agent 持续改进代码质量数天的 harness</li>
+          <li><strong>Martin Fowler</strong> 撰文认可 harness engineering 概念</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTES -->
+<section class="quote-section">
+  <div class="section-inner">
+    <div class="section-tag" style="color:#93c5fd;">核心观点</div>
+    <h2>业界洞察</h2>
+    <p class="section-desc">来自 OpenAI、Anthropic、社区从业者的关键判断。</p>
+
+    <div class="quotes-grid">
+      <div class="quote-card">
+        <p class="quote-text">Agents aren't hard; the Harness is hard.</p>
+        <div class="quote-source"><strong>OpenAI + Stripe</strong> — 工程实践验证</div>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">The model is no longer the competitive advantage. The system surrounding the model determines whether an agent succeeds or fails in production.</p>
+        <div class="quote-source"><strong>OpenAI</strong> — Harness Engineering 报告，2026</div>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">You're not just completing tasks. You're building a useful, trustworthy working relationship with an AI model — and that requires a harness.</p>
+        <div class="quote-source"><strong>社区共识</strong> — r/ClaudeCode, 2026</div>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">A framework is the blueprint. A harness is the factory floor. LangChain gives you components to assemble an agent. A harness makes that agent actually work in production.</p>
+        <div class="quote-source"><strong>Harness-Engineering.ai</strong> — Complete Guide, 2026</div>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">別再調prompt了，學會造韁繩。不是调 prompt，是造缰绳。</p>
+        <div class="quote-source"><strong>Harness Engineering</strong> — 核心理念</div>
+      </div>
+      <div class="quote-card">
+        <p class="quote-text">Agent harness design is usually buried in controller code and runtime-specific conventions, making it difficult to transfer, compare, or study as a scientific object.</p>
+        <div class="quote-source"><strong>arXiv:2603.25723</strong> — 清华 + 哈工大，2026/03/26</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section id="report" class="report-section">
+  <div class="section-inner">
+    <div class="report-card">
+      <div>
+        <div class="report-badge">📖 完整研究报告</div>
+        <h3>Harness Engineering 综述报告</h3>
+        <p>基于 8 轮深度 Web 搜索，覆盖学术论文、工业实践、开源社区和未来趋势的完整中文综述。</p>
+        <div class="report-toc">
+          <div class="report-toc-item"><span class="toc-num">1</span>概念起源与历史（Mitchell Hashimoto + OpenAI 实验）</div>
+          <div class="report-toc-item"><span class="toc-num">2</span>核心定义与本质区别（Framework vs Harness）</div>
+          <div class="report-toc-item"><span class="toc-num">3</span>学术进展（arXiv:2603.25723，清华+哈工大）</div>
+          <div class="report-toc-item"><span class="toc-num">4</span>工业实践（Anthropic, OpenAI, LangChain）</div>
+          <div class="report-toc-item"><span class="toc-num">5</span>社区认知与讨论（Reddit/HN，开源工具）</div>
+          <div class="report-toc-item"><span class="toc-num">6</span>shareAI-lab/learn-claude-code：教学实现 vs 原创概念</div>
+          <div class="report-toc-item"><span class="toc-num">7</span>7大核心组件详解</div>
+          <div class="report-toc-item"><span class="toc-num">8</span>未来走向：标准化与趋势（2026-2027）</div>
+        </div>
+      </div>
+      <div class="report-actions">
+        <div class="report-stat-num">34K</div>
+        <div class="report-stat-label">字 · 中文综述</div>
+        <a href="./REPORT.md" class="btn-primary" style="white-space:nowrap;">📖 阅读完整报告</a>
+        <a href="https://github.com/warren-wupeng/harness-engineering" class="btn-secondary" style="white-space:nowrap;">⭐ GitHub 仓库</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <h3>Harness Engineering</h3>
+      <p>AI Agent 基础设施工程综述。记录 2026 年最重要的 AI 工程范式转变——从调 prompt 到造缰绳。</p>
+    </div>
+    <div class="footer-col">
+      <h4>内容</h4>
+      <ul>
+        <li><a href="#definition">核心定义</a></li>
+        <li><a href="#components">7大组件</a></li>
+        <li><a href="#timeline">起源历史</a></li>
+        <li><a href="#industry">工业实践</a></li>
+        <li><a href="./REPORT.md">完整报告</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>延伸阅读</h4>
+      <ul>
+        <li><a href="https://openai.com/index/harness-engineering/" target="_blank">OpenAI 官方报告</a></li>
+        <li><a href="https://arxiv.org/abs/2603.25723" target="_blank">arXiv 论文</a></li>
+        <li><a href="https://martinfowler.com/articles/exploring-gen-ai/harness-engineering.html" target="_blank">Martin Fowler 文章</a></li>
+        <li><a href="https://github.com/shareAI-lab/learn-claude-code" target="_blank">learn-claude-code</a></li>
+        <li><a href="https://github.com/warren-wupeng/harness-engineering" target="_blank">本仓库 GitHub</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Harness Engineering Survey · Research by Warren</span>
+    <span>Compiled March 2026 · <a href="./REPORT.md" style="color:var(--gray-500);">Full Report (中文)</a></span>
+  </div>
+</footer>
+
+</body>
+</html>
