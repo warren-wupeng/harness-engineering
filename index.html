@@ -385,6 +385,22 @@
     .footer-col a:hover { color: var(--white); }
     .footer-bottom { border-top: 1px solid var(--gray-800); padding-top: 24px; font-size: 13px; color: var(--gray-600); display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: 0 auto; }
 
+
+    /* ── LANG SWITCHER ── */
+    .lang-switcher {
+      display: flex; align-items: center; gap: 0;
+      border: 1px solid var(--gray-200); border-radius: 6px;
+      overflow: hidden; margin-right: 4px;
+    }
+    .lang-btn {
+      padding: 5px 10px; font-size: 12px; font-weight: 600;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--gray-500); transition: all .15s; line-height: 1;
+    }
+    .lang-btn.active { background: var(--gray-900); color: var(--white); }
+    .lang-btn:hover:not(.active) { background: var(--gray-100); color: var(--gray-700); }
+    @media (max-width: 900px) { .lang-switcher { margin-right: 8px; } }
+
     /* ── HAMBURGER ── */
     .nav-hamburger {
       display: none;
@@ -486,40 +502,44 @@
 <nav>
   <a href="#" class="nav-logo"><span class="dot"></span>Harness Engineering</a>
   <ul class="nav-links">
-    <li><a href="#definition">定义</a></li>
-    <li><a href="#components">组件</a></li>
-    <li><a href="#timeline">起源</a></li>
-    <li><a href="#industry">工业实践</a></li>
-    <li><a href="#report">完整报告</a></li>
+    <li><a href="#definition" data-i18n="nav.definition">定义</a></li>
+    <li><a href="#components" data-i18n="nav.components">组件</a></li>
+    <li><a href="#timeline" data-i18n="nav.timeline">起源</a></li>
+    <li><a href="#industry" data-i18n="nav.industry">工业实践</a></li>
+    <li><a href="#report" data-i18n="nav.report">完整报告</a></li>
   </ul>
-  <a href="./REPORT.md" class="nav-cta">📖 完整报告</a>
+  <a href="./REPORT.md" class="nav-cta" data-i18n="nav.cta">📖 完整报告</a>
+  <div class="lang-switcher" id="langSwitcher">
+    <button class="lang-btn active" id="btnZh" onclick="setLang('zh')">中</button>
+    <button class="lang-btn" id="btnEn" onclick="setLang('en')">EN</button>
+  </div>
   <button class="nav-hamburger" id="hamburger" aria-label="菜单">
     <span></span><span></span><span></span>
   </button>
 </nav>
 <div class="nav-mobile-menu" id="mobileMenu">
-  <a href="#definition" onclick="closeMobileMenu()">定义</a>
-  <a href="#components" onclick="closeMobileMenu()">组件</a>
-  <a href="#timeline" onclick="closeMobileMenu()">起源</a>
-  <a href="#industry" onclick="closeMobileMenu()">工业实践</a>
-  <a href="#report" onclick="closeMobileMenu()">完整报告</a>
-  <a href="./REPORT.md" style="color:var(--blue);font-weight:600;margin-top:4px;">📖 完整报告</a>
+  <a href="#definition" onclick="closeMobileMenu()" data-i18n="nav.definition">定义</a>
+  <a href="#components" onclick="closeMobileMenu()" data-i18n="nav.components">组件</a>
+  <a href="#timeline" onclick="closeMobileMenu()" data-i18n="nav.timeline">起源</a>
+  <a href="#industry" onclick="closeMobileMenu()" data-i18n="nav.industry">工业实践</a>
+  <a href="#report" onclick="closeMobileMenu()" data-i18n="nav.report">完整报告</a>
+  <a href="./REPORT.md" style="color:var(--blue);font-weight:600;margin-top:4px;" data-i18n="nav.cta">📖 完整报告</a>
 </div>
 
 <!-- HERO -->
 <section style="padding:0;">
   <div class="hero">
     <div>
-      <div class="hero-badge"><span class="pulse"></span>2026 年最重要的 AI 工程概念</div>
+      <div class="hero-badge"><span class="pulse"></span><span data-i18n="hero.badge">2026 年最重要的 AI 工程概念</span></div>
       <h1>Harness<br><span class="highlight">Engineering</span></h1>
-      <p class="hero-sub">
+      <p class="hero-sub" data-i18n-html="hero.sub">
         不是调 prompt，不是选框架。<br>
         真正的 AI Agent 工程，是<strong>造缰绳</strong>——<br>
         设计让模型可靠工作的基础设施。
       </p>
       <div class="hero-actions">
-        <a href="#definition" class="btn-primary">开始了解 →</a>
-        <a href="./REPORT.md" class="btn-secondary">📖 完整研究报告</a>
+        <a href="#definition" class="btn-primary" data-i18n="hero.btn1">开始了解 →</a>
+        <a href="./REPORT.md" class="btn-secondary" data-i18n="hero.btn2">📖 完整研究报告</a>
       </div>
     </div>
     <div class="hero-diagram">
@@ -551,19 +571,19 @@
   <div class="stats-inner">
     <div class="stat">
       <div class="stat-num"><span>1M</span>+</div>
-      <div class="stat-label">OpenAI 百万行代码实验<br>零行人工编写</div>
+      <div class="stat-label" data-i18n-html="stats.s1">OpenAI 百万行代码实验<br>零行人工编写</div>
     </div>
     <div class="stat">
       <div class="stat-num"><span>2–5</span>×</div>
-      <div class="stat-label">Harness Engineering<br>可靠性提升倍数</div>
+      <div class="stat-label" data-i18n-html="stats.s2">Harness Engineering<br>可靠性提升倍数</div>
     </div>
     <div class="stat">
       <div class="stat-num"><span>80</span>%</div>
-      <div class="stat-label">vs 仅 Prompt Engineering<br>可靠性提升差距</div>
+      <div class="stat-label" data-i18n-html="stats.s3">vs 仅 Prompt Engineering<br>可靠性提升差距</div>
     </div>
     <div class="stat">
       <div class="stat-num">Feb<span>'26</span></div>
-      <div class="stat-label">概念正式形成时间<br>Mitchell Hashimoto</div>
+      <div class="stat-label" data-i18n-html="stats.s4">概念正式形成时间<br>Mitchell Hashimoto</div>
     </div>
   </div>
 </div>
@@ -571,22 +591,22 @@
 <!-- DEFINITION -->
 <section id="definition">
   <div class="section-inner">
-    <div class="section-tag">核心概念</div>
-    <h2>什么是 Harness Engineering？</h2>
+    <div class="section-tag" data-i18n="def.tag">核心概念</div>
+    <h2 data-i18n="def.h2">什么是 Harness Engineering？</h2>
     <p class="section-desc">
-      Harness Engineering 是设计、构建和运维<strong>围绕 AI 模型的基础设施</strong>的工程学科，确保 agent 在生产环境中可靠、一致、大规模运行。
+      <span data-i18n-html="def.desc">Harness Engineering 是设计、构建和运维<strong>围绕 AI 模型的基础设施</strong>的工程学科，确保 agent 在生产环境中可靠、一致、大规模运行。</span>
     </p>
 
     <div class="definition-grid">
       <div class="def-card highlight-card">
         <div class="def-icon amber">🐎</div>
-        <h3>缰绳隐喻</h3>
-        <p>模型是马——强大但不可预测。Harness 是缰绳、马鞍、嚼子，引导这股力量做有用的工作，而不是让它到处乱跑。工程师是骑手，提供方向。</p>
+        <h3 data-i18n="def.card1.h3">缰绳隐喻</h3>
+        <p data-i18n="def.card1.p">模型是马——强大但不可预测。Harness 是缰绳、马鞍、嚼子，引导这股力量做有用的工作，而不是让它到处乱跑。工程师是骑手，提供方向。</p>
       </div>
       <div class="def-card">
         <div class="def-icon blue">🧠</div>
-        <h3>核心区分</h3>
-        <p>Agent 是那个被训练出来的神经网络本身。工程师不是在"造 Agent"，而是在给 Agent 搭建运作环境。模型提供智能，Harness 提供双手、眼睛和工作空间。</p>
+        <h3 data-i18n="def.card2.h3">核心区分</h3>
+        <p data-i18n="def.card2.p">Agent 是那个被训练出来的神经网络本身。工程师不是在"造 Agent"，而是在给 Agent 搭建运作环境。模型提供智能，Harness 提供双手、眼睛和工作空间。</p>
       </div>
     </div>
 
@@ -597,30 +617,30 @@
       <div class="line"><span class="eq-comment"># — shareAI-lab / learn-claude-code</span></div>
     </div>
 
-    <h3 style="font-size:22px; font-weight:700; margin-bottom:20px; color:var(--black);">Framework vs Harness：本质区别</h3>
+    <h3 style="font-size:22px; font-weight:700; margin-bottom:20px; color:var(--black);" data-i18n="def.vsh3">Framework vs Harness：本质区别</h3>
 
     <div class="table-scroll">
     <table class="vs-table">
       <thead>
         <tr>
-          <th>维度</th>
+          <th data-i18n="def.tbl.dim">维度</th>
           <th><span class="tag-amber">Agent Framework</span></th>
           <th><span class="tag-blue">Agent Harness</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr><td>主要角色</td><td>提供构建 agent 的库和抽象</td><td>提供执行 agent 的运行时基础设施</td></tr>
-        <tr><td>类比</td><td>蓝图 / 建筑材料</td><td>工厂车间 / 操作系统</td></tr>
-        <tr><td>设计哲学</td><td>高度模块化，用户自由组装</td><td>强主张（opinionated），内置决策</td></tr>
-        <tr><td>状态管理</td><td>通常无状态或轻量状态</td><td>持久化状态，跨会话恢复</td></tr>
-        <tr><td>安全控制</td><td>提供工具，不强制治理</td><td>内置策略、工具访问中介、安全边界</td></tr>
-        <tr><td>代表产品</td><td>LangChain, CrewAI, AutoGen</td><td>Claude Agent SDK, Codex harness</td></tr>
+        <tr><td data-i18n="def.tbl.r1c1">主要角色</td><td data-i18n="def.tbl.r1c2">提供构建 agent 的库和抽象</td><td data-i18n="def.tbl.r1c3">提供执行 agent 的运行时基础设施</td></tr>
+        <tr><td data-i18n="def.tbl.r2c1">类比</td><td data-i18n="def.tbl.r2c2">蓝图 / 建筑材料</td><td data-i18n="def.tbl.r2c3">工厂车间 / 操作系统</td></tr>
+        <tr><td data-i18n="def.tbl.r3c1">设计哲学</td><td data-i18n="def.tbl.r3c2">高度模块化，用户自由组装</td><td data-i18n="def.tbl.r3c3">强主张（opinionated），内置决策</td></tr>
+        <tr><td data-i18n="def.tbl.r4c1">状态管理</td><td data-i18n="def.tbl.r4c2">通常无状态或轻量状态</td><td data-i18n="def.tbl.r4c3">持久化状态，跨会话恢复</td></tr>
+        <tr><td data-i18n="def.tbl.r5c1">安全控制</td><td data-i18n="def.tbl.r5c2">提供工具，不强制治理</td><td data-i18n="def.tbl.r5c3">内置策略、工具访问中介、安全边界</td></tr>
+        <tr><td data-i18n="def.tbl.r6c1">代表产品</td><td>LangChain, CrewAI, AutoGen</td><td>Claude Agent SDK, Codex harness</td></tr>
       </tbody>
     </table>
     </div>
 
     <p style="font-size:14px; color:var(--gray-500); margin-top:12px;">
-      💡 关键：Harness 通常<em>使用</em> Framework。LangChain 自己的术语——LangChain = framework，LangGraph = runtime，DeepAgents = harness。
+      <span data-i18n-html="def.tip">💡 关键：Harness 通常<em>使用</em> Framework。LangChain 自己的术语——LangChain = framework，LangGraph = runtime，DeepAgents = harness。</span>
     </p>
   </div>
 </section>
@@ -628,10 +648,10 @@
 <!-- COMPONENTS -->
 <section id="components" class="components-section">
   <div class="section-inner">
-    <div class="section-tag">核心架构</div>
-    <h2>Harness 的 7 大核心组件</h2>
+    <div class="section-tag" data-i18n="comp.tag">核心架构</div>
+    <h2 data-i18n="comp.h2">Harness 的 7 大核心组件</h2>
     <p class="section-desc">
-      一个生产级 agent harness 需要覆盖 7 个维度。每个维度都在解决模型本身无法解决的问题。
+      <span data-i18n="comp.desc">一个生产级 agent harness 需要覆盖 7 个维度。每个维度都在解决模型本身无法解决的问题。</span>
     </p>
 
     <div class="components-grid">
@@ -639,7 +659,7 @@
         <div class="comp-num">01</div>
         <div class="comp-icon">📋</div>
         <h3>Context Management</h3>
-        <p>管理 agent 看到什么、记住什么。包括工作上下文（当前 turn）、会话状态（当前任务）、长期记忆（跨任务）和上下文压缩策略。</p>
+        <p data-i18n="comp.c1">管理 agent 看到什么、记住什么。包括工作上下文（当前 turn）、会话状态（当前任务）、长期记忆（跨任务）和上下文压缩策略。</p>
         <div class="comp-tags">
           <span class="comp-tag">working-context</span>
           <span class="comp-tag">session-state</span>
@@ -652,7 +672,7 @@
         <div class="comp-num">02</div>
         <div class="comp-icon">🔧</div>
         <h3>Tool Orchestration</h3>
-        <p>管理工具的访问和执行。包括受控访问（文件系统、API、shell、数据库）、参数验证、沙箱执行和输出净化。工具应设计为原子操作。</p>
+        <p data-i18n="comp.c2">管理工具的访问和执行。包括受控访问（文件系统、API、shell、数据库）、参数验证、沙箱执行和输出净化。工具应设计为原子操作。</p>
         <div class="comp-tags">
           <span class="comp-tag">tool-use</span>
           <span class="comp-tag">sandboxing</span>
@@ -665,7 +685,7 @@
         <div class="comp-num">03</div>
         <div class="comp-icon">✅</div>
         <h3>Verification Loops</h3>
-        <p>确保输出质量的护栏机制。结合确定性规则（linters、CI/CD）和 AI 驱动验证（agents 审查 agents）。将失败视为系统问题永久修复。</p>
+        <p data-i18n="comp.c3">确保输出质量的护栏机制。结合确定性规则（linters、CI/CD）和 AI 驱动验证（agents 审查 agents）。将失败视为系统问题永久修复。</p>
         <div class="comp-tags">
           <span class="comp-tag">linting</span>
           <span class="comp-tag">pre-commit</span>
@@ -678,7 +698,7 @@
         <div class="comp-num">04</div>
         <div class="comp-icon">💾</div>
         <h3>Memory Persistence</h3>
-        <p>跨步骤和会话的状态持久化。包括进度追踪（JSON/文件）、会话恢复（中断后继续）和语义检索（RAG 模式）。解决"AI 失忆"问题。</p>
+        <p data-i18n="comp.c4">跨步骤和会话的状态持久化。包括进度追踪（JSON/文件）、会话恢复（中断后继续）和语义检索（RAG 模式）。解决"AI 失忆"问题。</p>
         <div class="comp-tags">
           <span class="comp-tag">progress.json</span>
           <span class="comp-tag">session-recovery</span>
@@ -690,7 +710,7 @@
         <div class="comp-num">05</div>
         <div class="comp-icon">📊</div>
         <h3>Observability</h3>
-        <p>追踪每次工具调用、决策和 token 使用。聚类错误模式识别系统问题。监控成本，实现 KV-cache 优化（可降低 10x 成本）。</p>
+        <p data-i18n="comp.c5">追踪每次工具调用、决策和 token 使用。聚类错误模式识别系统问题。监控成本，实现 KV-cache 优化（可降低 10x 成本）。</p>
         <div class="comp-tags">
           <span class="comp-tag">logging</span>
           <span class="comp-tag">metrics</span>
@@ -703,7 +723,7 @@
         <div class="comp-num">06</div>
         <div class="comp-icon">🔒</div>
         <h3>Safety & HITL</h3>
-        <p>人机交互控制和安全机制。操作分类为安全/中等/危险三级。关键操作需人类批准。提供受控升级机制。</p>
+        <p data-i18n="comp.c6">人机交互控制和安全机制。操作分类为安全/中等/危险三级。关键操作需人类批准。提供受控升级机制。</p>
         <div class="comp-tags">
           <span class="comp-tag">risk-classification</span>
           <span class="comp-tag">approval-gates</span>
@@ -714,30 +734,30 @@
       <div class="component-card span2">
         <div class="comp-num">07</div>
         <div class="comp-icon">🏗️</div>
-        <h3>Architectural Patterns — 三层循环模型</h3>
-        <p>社区广泛采用的标准心智模型，将 harness 设计分为三个嵌套循环：</p>
+        <h3 data-i18n-html="comp.c7h3">Architectural Patterns — 三层循环模型</h3>
+        <p data-i18n="comp.c7">社区广泛采用的标准心智模型，将 harness 设计分为三个嵌套循环：</p>
         <div class="loop-diagram" style="margin-top:20px;">
           <div class="loop-title">The Three-Loop Architecture</div>
           <div class="loop-levels">
             <div class="loop-level outer">
               <div class="loop-level-num">Outer Loop</div>
               <div class="loop-level-content">
-                <h4>Project Level — 项目级</h4>
-                <p>捕获意图（规格、架构文档、知识库）+ 治理机制（防止代码库腐化）</p>
+                <h4 data-i18n-html="comp.loop.outer.h4">Project Level — 项目级</h4>
+                <p data-i18n="comp.loop.outer.p">捕获意图（规格、架构文档、知识库）+ 治理机制（防止代码库腐化）</p>
               </div>
             </div>
             <div class="loop-level middle">
               <div class="loop-level-num">Middle Loop</div>
               <div class="loop-level-content">
-                <h4>Orchestration Level — 功能级</h4>
-                <p>每个 feature 需要完整计划（需求、设计、任务拆解），验证通过后再进入下一任务</p>
+                <h4 data-i18n-html="comp.loop.mid.h4">Orchestration Level — 功能级</h4>
+                <p data-i18n="comp.loop.mid.p">每个 feature 需要完整计划（需求、设计、任务拆解），验证通过后再进入下一任务</p>
               </div>
             </div>
             <div class="loop-level inner">
               <div class="loop-level-num">Inner Loop</div>
               <div class="loop-level-content">
-                <h4>Task Level — 任务级</h4>
-                <p>写代码 → 验证 → 错误反馈 → 重试。这个循环的结构决定了 agent 是输出可工作代码还是"自信的垃圾"</p>
+                <h4 data-i18n-html="comp.loop.inner.h4">Task Level — 任务级</h4>
+                <p data-i18n="comp.loop.inner.p">写代码 → 验证 → 错误反馈 → 重试。这个循环的结构决定了 agent 是输出可工作代码还是"自信的垃圾"</p>
               </div>
             </div>
           </div>
@@ -750,62 +770,62 @@
 <!-- TIMELINE -->
 <section id="timeline">
   <div class="section-inner">
-    <div class="section-tag">历史演进</div>
-    <h2>从 Prompt 到 Harness</h2>
-    <p class="section-desc">AI 工程实践的三个时代，每个时代都在解决上一个时代留下的问题。</p>
+    <div class="section-tag" data-i18n="tl.tag">历史演进</div>
+    <h2 data-i18n="tl.h2">从 Prompt 到 Harness</h2>
+    <p class="section-desc" data-i18n="tl.desc">AI 工程实践的三个时代，每个时代都在解决上一个时代留下的问题。</p>
 
     <div class="timeline-wrapper" style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start;">
       <div class="timeline">
         <div class="timeline-item dim">
           <div class="timeline-date">2024</div>
-          <div class="timeline-title">Prompt Engineering 时代</div>
-          <div class="timeline-desc">优化单次输入提示词。有效但局限——无法解决 agent 在多步骤任务中的可靠性问题。</div>
+          <div class="timeline-title" data-i18n="tl.t1.title">Prompt Engineering 时代</div>
+          <div class="timeline-desc" data-i18n="tl.t1.desc">优化单次输入提示词。有效但局限——无法解决 agent 在多步骤任务中的可靠性问题。</div>
         </div>
         <div class="timeline-item dim">
           <div class="timeline-date">2025 年中</div>
-          <div class="timeline-title">Context Engineering 时代</div>
+          <div class="timeline-title" data-i18n="tl.t2.title">Context Engineering 时代</div>
           <div class="timeline-desc">Karpathy 等人推广，LangChain + Anthropic 正式定义。通过 RAG、MCP、记忆和动态注入管理 agent 看到什么。成为 Harness 的一个组件。</div>
         </div>
         <div class="timeline-item dim">
           <div class="timeline-date">2025 年末</div>
-          <div class="timeline-title">隐式实践阶段</div>
+          <div class="timeline-title" data-i18n="tl.t3.title">隐式实践阶段</div>
           <div class="timeline-desc">AutoGPT、Codex 等系统中已存在 harness 组件，但尚无统一术语。Reddit r/AI_Agents 开始讨论 "agent harness" 概念（2025/12/20）。</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">2026 年 2 月</div>
-          <div class="timeline-title">概念正式化</div>
+          <div class="timeline-title" data-i18n="tl.t4.title">概念正式化</div>
           <div class="timeline-desc"><strong>Mitchell Hashimoto</strong>（HashiCorp 联合创始人）博客文章 "Engineer the Harness" 正式命名。<strong>OpenAI</strong> 发布 "Harness engineering: leveraging Codex in an agent-first world"，披露百万行代码实验。</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">2026 年 3 月</div>
-          <div class="timeline-title">系统化阶段（当前）</div>
+          <div class="timeline-title" data-i18n="tl.t5.title">系统化阶段（当前）</div>
           <div class="timeline-desc">Martin Fowler 撰文讨论。清华+哈工大发表 arXiv:2603.25723 论文将其学术形式化。社区工具生态涌现（Lore、Desloppify 等）。Reddit/HN 热烈讨论，"2026 = Harness Engineering" 成为社区共识。</div>
         </div>
         <div class="timeline-item">
           <div class="timeline-date">2026–2027</div>
-          <div class="timeline-title">标准化预测</div>
-          <div class="timeline-desc">AaaS 平台、Semantic Graphs、模型商品化。Harness 成为主要工程产物，模型仅是其中的商品组件。</div>
+          <div class="timeline-title" data-i18n="tl.t6.title">标准化预测</div>
+          <div class="timeline-desc" data-i18n="tl.t6.desc">AaaS 平台、Semantic Graphs、模型商品化。Harness 成为主要工程产物，模型仅是其中的商品组件。</div>
         </div>
       </div>
 
       <div class="timeline-catalyst">
-        <h3 style="font-size:20px; font-weight:700; margin-bottom:24px;">催化剂：OpenAI 百万行代码实验</h3>
+        <h3 style="font-size:20px; font-weight:700; margin-bottom:24px;" data-i18n="tl.catalyst.h3">催化剂：OpenAI 百万行代码实验</h3>
         <div style="background:var(--gray-900); border-radius:16px; padding:32px; color:var(--gray-300);">
           <div style="font-size:48px; font-weight:800; color:#3b82f6; letter-spacing:-2px; line-height:1; margin-bottom:8px;">1,000,000+</div>
           <div style="font-size:14px; color:var(--gray-400); margin-bottom:24px;">Lines of code — zero manually written</div>
           <div style="font-size:14px; line-height:1.8; color:var(--gray-400);">
-            <p style="margin-bottom:12px;">OpenAI 在 2026 年初用 Codex 生成了约 100 万行代码——包括应用逻辑、基础设施、工具链、文档和内部开发工具。</p>
-            <p style="margin-bottom:12px;"><strong style="color:var(--gray-200);">连 AGENTS.md 指导文件本身都是 Codex 写的。</strong></p>
-            <p>核心洞察：模型能力已不再是瓶颈。框架设计——Harness——才是决定 agent 能否在生产中成功的关键。</p>
+            <p style="margin-bottom:12px;" data-i18n="tl.catalyst.p1">OpenAI 在 2026 年初用 Codex 生成了约 100 万行代码——包括应用逻辑、基础设施、工具链、文档和内部开发工具。</p>
+            <p style="margin-bottom:12px;"><strong style="color:var(--gray-200);" data-i18n="tl.catalyst.p2">连 AGENTS.md 指导文件本身都是 Codex 写的。</strong></p>
+            <p data-i18n="tl.catalyst.p3">核心洞察：模型能力已不再是瓶颈。框架设计——Harness——才是决定 agent 能否在生产中成功的关键。</p>
           </div>
         </div>
 
         <div style="margin-top:24px; background:var(--amber-light); border-radius:12px; padding:24px; border: 1px solid #fde68a;">
-          <div style="font-size:13px; font-weight:700; color:#92400e; margin-bottom:8px;">关键量化数据</div>
+          <div style="font-size:13px; font-weight:700; color:#92400e; margin-bottom:8px;" data-i18n="tl.catalyst.label">关键量化数据</div>
           <div style="font-size:14px; color:#78350f; line-height:1.8;">
-            仅改进 Harness 设计（不改变模型权重）：<br>
+            <span data-i18n-html="tl.catalyst.metric">仅改进 Harness 设计（不改变模型权重）：<br>
             <strong>编码 benchmark 准确率：6.7% → 68.3%</strong><br>
-            <span style="color:#92400e;">（Can.ac + LangChain 实验）</span>
+            <span style="color:#92400e;">（Can.ac + LangChain 实验）</span></span>
           </div>
         </div>
       </div>
@@ -816,9 +836,9 @@
 <!-- INDUSTRY -->
 <section id="industry" style="background:var(--gray-100);">
   <div class="section-inner">
-    <div class="section-tag">工业实践</div>
-    <h2>主要机构的 Harness 实践</h2>
-    <p class="section-desc">Anthropic、OpenAI、LangChain 等机构如何定义和实现 Harness 工程。</p>
+    <div class="section-tag" data-i18n="ind.tag">工业实践</div>
+    <h2 data-i18n="ind.h2">主要机构的 Harness 实践</h2>
+    <p class="section-desc" data-i18n="ind.desc">Anthropic、OpenAI、LangChain 等机构如何定义和实现 Harness 工程。</p>
 
     <div class="industry-grid">
       <div class="industry-card">
@@ -856,7 +876,7 @@
       </div>
 
       <div class="industry-card">
-        <div class="industry-logo community">社区 & 学术</div>
+        <div class="industry-logo community" data-i18n="ind.community">社区 & 学术</div>
         <h3>学术论文与开源生态</h3>
         <p>学术界和社区的重要进展：</p>
         <ul>
@@ -873,14 +893,14 @@
 <!-- QUOTES -->
 <section class="quote-section">
   <div class="section-inner">
-    <div class="section-tag" style="color:#93c5fd;">核心观点</div>
-    <h2>业界洞察</h2>
-    <p class="section-desc">来自 OpenAI、Anthropic、社区从业者的关键判断。</p>
+    <div class="section-tag" style="color:#93c5fd;" data-i18n="qt.tag">核心观点</div>
+    <h2 data-i18n="qt.h2">业界洞察</h2>
+    <p class="section-desc" data-i18n="qt.desc">来自 OpenAI、Anthropic、社区从业者的关键判断。</p>
 
     <div class="quotes-grid">
       <div class="quote-card">
         <p class="quote-text">Agents aren't hard; the Harness is hard.</p>
-        <div class="quote-source"><strong>OpenAI + Stripe</strong> — 工程实践验证</div>
+        <div class="quote-source" data-i18n-html="qt.q1.src"><strong>OpenAI + Stripe</strong> — 工程实践验证</div>
       </div>
       <div class="quote-card">
         <p class="quote-text">The model is no longer the competitive advantage. The system surrounding the model determines whether an agent succeeds or fails in production.</p>
@@ -888,7 +908,7 @@
       </div>
       <div class="quote-card">
         <p class="quote-text">You're not just completing tasks. You're building a useful, trustworthy working relationship with an AI model — and that requires a harness.</p>
-        <div class="quote-source"><strong>社区共识</strong> — r/ClaudeCode, 2026</div>
+        <div class="quote-source" data-i18n-html="qt.q3.src"><strong>社区共识</strong> — r/ClaudeCode, 2026</div>
       </div>
       <div class="quote-card">
         <p class="quote-text">A framework is the blueprint. A harness is the factory floor. LangChain gives you components to assemble an agent. A harness makes that agent actually work in production.</p>
@@ -911,25 +931,25 @@
   <div class="section-inner">
     <div class="report-card">
       <div>
-        <div class="report-badge">📖 完整研究报告</div>
-        <h3>Harness Engineering 综述报告</h3>
-        <p>基于 8 轮深度 Web 搜索，覆盖学术论文、工业实践、开源社区和未来趋势的完整中文综述。</p>
+        <div class="report-badge" data-i18n="rpt.badge">📖 完整研究报告</div>
+        <h3 data-i18n="rpt.h3">Harness Engineering 综述报告</h3>
+        <p data-i18n="rpt.desc">基于 8 轮深度 Web 搜索，覆盖学术论文、工业实践、开源社区和未来趋势的完整中文综述。</p>
         <div class="report-toc">
-          <div class="report-toc-item"><span class="toc-num">1</span>概念起源与历史（Mitchell Hashimoto + OpenAI 实验）</div>
-          <div class="report-toc-item"><span class="toc-num">2</span>核心定义与本质区别（Framework vs Harness）</div>
-          <div class="report-toc-item"><span class="toc-num">3</span>学术进展（arXiv:2603.25723，清华+哈工大）</div>
-          <div class="report-toc-item"><span class="toc-num">4</span>工业实践（Anthropic, OpenAI, LangChain）</div>
-          <div class="report-toc-item"><span class="toc-num">5</span>社区认知与讨论（Reddit/HN，开源工具）</div>
-          <div class="report-toc-item"><span class="toc-num">6</span>shareAI-lab/learn-claude-code：教学实现 vs 原创概念</div>
-          <div class="report-toc-item"><span class="toc-num">7</span>7大核心组件详解</div>
-          <div class="report-toc-item"><span class="toc-num">8</span>未来走向：标准化与趋势（2026-2027）</div>
+          <div class="report-toc-item"><span class="toc-num">1</span><span data-i18n="rpt.toc1">概念起源与历史（Mitchell Hashimoto + OpenAI 实验）</span></div>
+          <div class="report-toc-item"><span class="toc-num">2</span><span data-i18n="rpt.toc2">核心定义与本质区别（Framework vs Harness）</span></div>
+          <div class="report-toc-item"><span class="toc-num">3</span><span data-i18n="rpt.toc3">学术进展（arXiv:2603.25723，清华+哈工大）</span></div>
+          <div class="report-toc-item"><span class="toc-num">4</span><span data-i18n="rpt.toc4">工业实践（Anthropic, OpenAI, LangChain）</span></div>
+          <div class="report-toc-item"><span class="toc-num">5</span><span data-i18n="rpt.toc5">社区认知与讨论（Reddit/HN，开源工具）</span></div>
+          <div class="report-toc-item"><span class="toc-num">6</span><span data-i18n="rpt.toc6">shareAI-lab/learn-claude-code：教学实现 vs 原创概念</span></div>
+          <div class="report-toc-item"><span class="toc-num">7</span><span data-i18n="rpt.toc7">7大核心组件详解</span></div>
+          <div class="report-toc-item"><span class="toc-num">8</span><span data-i18n="rpt.toc8">未来走向：标准化与趋势（2026-2027）</span></div>
         </div>
       </div>
       <div class="report-actions">
         <div class="report-stat-num">34K</div>
-        <div class="report-stat-label">字 · 中文综述</div>
-        <a href="./REPORT.md" class="btn-primary" style="white-space:nowrap;">📖 阅读完整报告</a>
-        <a href="https://github.com/warren-wupeng/harness-engineering" class="btn-secondary" style="white-space:nowrap;">⭐ GitHub 仓库</a>
+        <div class="report-stat-label" data-i18n="rpt.stat">字 · 中文综述</div>
+        <a href="./REPORT.md" class="btn-primary" style="white-space:nowrap;" data-i18n="rpt.btn1">📖 阅读完整报告</a>
+        <a href="https://github.com/warren-wupeng/harness-engineering" class="btn-secondary" style="white-space:nowrap;" data-i18n="rpt.btn2">⭐ GitHub 仓库</a>
       </div>
     </div>
   </div>
@@ -940,20 +960,20 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <h3>Harness Engineering</h3>
-      <p>AI Agent 基础设施工程综述。记录 2026 年最重要的 AI 工程范式转变——从调 prompt 到造缰绳。</p>
+      <p data-i18n="ft.brand">AI Agent 基础设施工程综述。记录 2026 年最重要的 AI 工程范式转变——从调 prompt 到造缰绳。</p>
     </div>
     <div class="footer-col">
-      <h4>内容</h4>
+      <h4 data-i18n="ft.col1h">内容</h4>
       <ul>
-        <li><a href="#definition">核心定义</a></li>
-        <li><a href="#components">7大组件</a></li>
-        <li><a href="#timeline">起源历史</a></li>
-        <li><a href="#industry">工业实践</a></li>
-        <li><a href="./REPORT.md">完整报告</a></li>
+        <li><a href="#definition" data-i18n="ft.l1">核心定义</a></li>
+        <li><a href="#components" data-i18n="ft.l2">7大组件</a></li>
+        <li><a href="#timeline" data-i18n="ft.l3">起源历史</a></li>
+        <li><a href="#industry" data-i18n="nav.industry">工业实践</a></li>
+        <li><a href="./REPORT.md" data-i18n="ft.l5">完整报告</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>延伸阅读</h4>
+      <h4 data-i18n="ft.col2h">延伸阅读</h4>
       <ul>
         <li><a href="https://openai.com/index/harness-engineering/" target="_blank">OpenAI 官方报告</a></li>
         <li><a href="https://arxiv.org/abs/2603.25723" target="_blank">arXiv 论文</a></li>
@@ -964,8 +984,8 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2026 Harness Engineering Survey · Research by Warren</span>
-    <span>Compiled March 2026 · <a href="./REPORT.md" style="color:var(--gray-500);">Full Report (中文)</a></span>
+    <span data-i18n="ft.copy">© 2026 Harness Engineering Survey · Research by Warren</span>
+    <span data-i18n-html="ft.compiled">Compiled March 2026 · <a href="./REPORT.md" style="color:var(--gray-500);">Full Report (中文)</a></span>
   </div>
 </footer>
 
@@ -986,6 +1006,244 @@
       closeMobileMenu();
     }
   });
+
+  // ── i18n ──────────────────────────────────────────────────────────────────
+  const TRANSLATIONS = {
+    zh: {
+      'nav.definition': '定义',
+      'nav.components': '组件',
+      'nav.timeline':   '起源',
+      'nav.industry':   '工业实践',
+      'nav.report':     '完整报告',
+      'nav.cta':        '📖 完整报告',
+      'hero.badge':  '2026 年最重要的 AI 工程概念',
+      'hero.sub':    '不是调 prompt，不是选框架。<br>真正的 AI Agent 工程，是<strong>造缰绳</strong>——<br>设计让模型可靠工作的基础设施。',
+      'hero.btn1':   '开始了解 →',
+      'hero.btn2':   '📖 完整研究报告',
+      'stats.s1': 'OpenAI 百万行代码实验<br>零行人工编写',
+      'stats.s2': 'Harness Engineering<br>可靠性提升倍数',
+      'stats.s3': 'vs 仅 Prompt Engineering<br>可靠性提升差距',
+      'stats.s4': '概念正式形成时间<br>Mitchell Hashimoto',
+      'def.tag':      '核心概念',
+      'def.h2':       '什么是 Harness Engineering？',
+      'def.desc':     'Harness Engineering 是设计、构建和运维<strong>围绕 AI 模型的基础设施</strong>的工程学科，确保 agent 在生产环境中可靠、一致、大规模运行。',
+      'def.card1.h3': '缰绳隐喻',
+      'def.card1.p':  '模型是马——强大但不可预测。Harness 是缰绳、马鞍、嚼子，引导这股力量做有用的工作，而不是让它到处乱跑。工程师是骑手，提供方向。',
+      'def.card2.h3': '核心区分',
+      'def.card2.p':  'Agent 是那个被训练出来的神经网络本身。工程师不是在"造 Agent"，而是在给 Agent 搭建运作环境。模型提供智能，Harness 提供双手、眼睛和工作空间。',
+      'def.vsh3':     'Framework vs Harness：本质区别',
+      'def.tbl.dim':  '维度',
+      'def.tbl.r1c1': '主要角色', 'def.tbl.r1c2': '提供构建 agent 的库和抽象', 'def.tbl.r1c3': '提供执行 agent 的运行时基础设施',
+      'def.tbl.r2c1': '类比',     'def.tbl.r2c2': '蓝图 / 建筑材料',           'def.tbl.r2c3': '工厂车间 / 操作系统',
+      'def.tbl.r3c1': '设计哲学', 'def.tbl.r3c2': '高度模块化，用户自由组装',  'def.tbl.r3c3': '强主张（opinionated），内置决策',
+      'def.tbl.r4c1': '状态管理', 'def.tbl.r4c2': '通常无状态或轻量状态',      'def.tbl.r4c3': '持久化状态，跨会话恢复',
+      'def.tbl.r5c1': '安全控制', 'def.tbl.r5c2': '提供工具，不强制治理',      'def.tbl.r5c3': '内置策略、工具访问中介、安全边界',
+      'def.tbl.r6c1': '代表产品',
+      'def.tip': '💡 关键：Harness 通常<em>使用</em> Framework。LangChain 自己的术语——LangChain = framework，LangGraph = runtime，DeepAgents = harness。',
+      'comp.tag':  '核心架构',
+      'comp.h2':   'Harness 的 7 大核心组件',
+      'comp.desc': '一个生产级 agent harness 需要覆盖 7 个维度。每个维度都在解决模型本身无法解决的问题。',
+      'comp.c1': '管理 agent 看到什么、记住什么。包括工作上下文（当前 turn）、会话状态（当前任务）、长期记忆（跨任务）和上下文压缩策略。',
+      'comp.c2': '管理工具的访问和执行。包括受控访问（文件系统、API、shell、数据库）、参数验证、沙箱执行和输出净化。工具应设计为原子操作。',
+      'comp.c3': '确保输出质量的护栏机制。结合确定性规则（linters、CI/CD）和 AI 驱动验证（agents 审查 agents）。将失败视为系统问题永久修复。',
+      'comp.c4': '跨步骤和会话的状态持久化。包括进度追踪（JSON/文件）、会话恢复（中断后继续）和语义检索（RAG 模式）。解决"AI 失忆"问题。',
+      'comp.c5': '追踪每次工具调用、决策和 token 使用。聚类错误模式识别系统问题。监控成本，实现 KV-cache 优化（可降低 10x 成本）。',
+      'comp.c6': '人机交互控制和安全机制。操作分类为安全/中等/危险三级。关键操作需人类批准。提供受控升级机制。',
+      'comp.c7':   '社区广泛采用的标准心智模型，将 harness 设计分为三个嵌套循环：',
+      'comp.c7h3': 'Architectural Patterns — 三层循环模型',
+      'comp.loop.outer.h4': 'Project Level — 项目级',
+      'comp.loop.outer.p':  '捕获意图（规格、架构文档、知识库）+ 治理机制（防止代码库腐化）',
+      'comp.loop.mid.h4':   'Orchestration Level — 功能级',
+      'comp.loop.mid.p':    '每个 feature 需要完整计划（需求、设计、任务拆解），验证通过后再进入下一任务',
+      'comp.loop.inner.h4': 'Task Level — 任务级',
+      'comp.loop.inner.p':  '写代码 → 验证 → 错误反馈 → 重试。这个循环的结构决定了 agent 是输出可工作代码还是"自信的垃圾"',
+      'tl.tag':  '历史演进',
+      'tl.h2':   '从 Prompt 到 Harness',
+      'tl.desc': 'AI 工程实践的三个时代，每个时代都在解决上一个时代留下的问题。',
+      'tl.t1.title': 'Prompt Engineering 时代',
+      'tl.t1.desc':  '优化单次输入提示词。有效但局限——无法解决 agent 在多步骤任务中的可靠性问题。',
+      'tl.t2.title': 'Context Engineering 时代',
+      'tl.t3.title': '隐式实践阶段',
+      'tl.t4.title': '概念正式化',
+      'tl.t5.title': '系统化阶段（当前）',
+      'tl.t6.title': '标准化预测',
+      'tl.t6.desc':  'AaaS 平台、Semantic Graphs、模型商品化。Harness 成为主要工程产物，模型仅是其中的商品组件。',
+      'tl.catalyst.h3':    '催化剂：OpenAI 百万行代码实验',
+      'tl.catalyst.p1':    'OpenAI 在 2026 年初用 Codex 生成了约 100 万行代码——包括应用逻辑、基础设施、工具链、文档和内部开发工具。',
+      'tl.catalyst.p2':    '连 AGENTS.md 指导文件本身都是 Codex 写的。',
+      'tl.catalyst.p3':    '核心洞察：模型能力已不再是瓶颈。框架设计——Harness——才是决定 agent 能否在生产中成功的关键。',
+      'tl.catalyst.label': '关键量化数据',
+      'tl.catalyst.metric':'仅改进 Harness 设计（不改变模型权重）：<br><strong>编码 benchmark 准确率：6.7% → 68.3%</strong><br><span style="color:#92400e;">（Can.ac + LangChain 实验）</span>',
+      'ind.tag':       '工业实践',
+      'ind.h2':        '主要机构的 Harness 实践',
+      'ind.desc':      'Anthropic、OpenAI、LangChain 等机构如何定义和实现 Harness 工程。',
+      'ind.community': '社区 & 学术',
+      'qt.tag':  '核心观点',
+      'qt.h2':   '业界洞察',
+      'qt.desc': '来自 OpenAI、Anthropic、社区从业者的关键判断。',
+      'qt.q1.src': '<strong>OpenAI + Stripe</strong> — 工程实践验证',
+      'qt.q3.src': '<strong>社区共识</strong> — r/ClaudeCode, 2026',
+      'rpt.badge': '📖 完整研究报告',
+      'rpt.h3':   'Harness Engineering 综述报告',
+      'rpt.desc': '基于 8 轮深度 Web 搜索，覆盖学术论文、工业实践、开源社区和未来趋势的完整中文综述。',
+      'rpt.toc1': '概念起源与历史（Mitchell Hashimoto + OpenAI 实验）',
+      'rpt.toc2': '核心定义与本质区别（Framework vs Harness）',
+      'rpt.toc3': '学术进展（arXiv:2603.25723，清华+哈工大）',
+      'rpt.toc4': '工业实践（Anthropic, OpenAI, LangChain）',
+      'rpt.toc5': '社区认知与讨论（Reddit/HN，开源工具）',
+      'rpt.toc6': 'shareAI-lab/learn-claude-code：教学实现 vs 原创概念',
+      'rpt.toc7': '7大核心组件详解',
+      'rpt.toc8': '未来走向：标准化与趋势（2026-2027）',
+      'rpt.stat': '字 · 中文综述',
+      'rpt.btn1': '📖 阅读完整报告',
+      'rpt.btn2': '⭐ GitHub 仓库',
+      'ft.brand':    'AI Agent 基础设施工程综述。记录 2026 年最重要的 AI 工程范式转变——从调 prompt 到造缰绳。',
+      'ft.col1h':    '内容',
+      'ft.col2h':    '延伸阅读',
+      'ft.l1':       '核心定义',
+      'ft.l2':       '7大组件',
+      'ft.l3':       '起源历史',
+      'ft.l5':       '完整报告',
+      'ft.copy':     '© 2026 Harness Engineering Survey · Research by Warren',
+      'ft.compiled': 'Compiled March 2026 · <a href="./REPORT.md" style="color:var(--gray-500);">Full Report (中文)</a>',
+    },
+    en: {
+      'nav.definition': 'Definition',
+      'nav.components': 'Components',
+      'nav.timeline':   'Origins',
+      'nav.industry':   'Industry',
+      'nav.report':     'Full Report',
+      'nav.cta':        '📖 Full Report',
+      'hero.badge':  'The Most Important AI Engineering Concept of 2026',
+      'hero.sub':    'Not prompt tuning. Not picking a framework.<br>Real AI Agent engineering means <strong>building the harness</strong> —<br>the infrastructure that makes models reliably work.',
+      'hero.btn1':   'Learn More →',
+      'hero.btn2':   '📖 Full Research Report',
+      'stats.s1': 'OpenAI Million-Line Experiment<br>Zero Manually Written',
+      'stats.s2': 'Harness Engineering<br>Reliability Multiplier',
+      'stats.s3': 'vs. Prompt Engineering Only<br>Reliability Gap',
+      'stats.s4': 'Concept Formalized<br>Mitchell Hashimoto',
+      'def.tag':      'Core Concept',
+      'def.h2':       'What is Harness Engineering?',
+      'def.desc':     'Harness Engineering is the engineering discipline of designing, building, and operating <strong>the infrastructure surrounding AI models</strong> — ensuring agents run reliably, consistently, and at scale in production.',
+      'def.card1.h3': 'The Harness Metaphor',
+      'def.card1.p':  'The model is the horse — powerful but unpredictable. The harness is the reins, saddle, and bit that guide that power toward useful work instead of running wild. The engineer is the rider, providing direction.',
+      'def.card2.h3': 'The Core Distinction',
+      'def.card2.p':  'The agent is the trained neural network itself. Engineers aren\'t "building agents" — they\'re building the operating environment for agents. The model provides intelligence; the harness provides hands, eyes, and workspace.',
+      'def.vsh3':     'Framework vs Harness: The Essential Difference',
+      'def.tbl.dim':  'Dimension',
+      'def.tbl.r1c1': 'Primary Role',    'def.tbl.r1c2': 'Provides libraries and abstractions to build agents', 'def.tbl.r1c3': 'Provides runtime infrastructure to execute agents',
+      'def.tbl.r2c1': 'Analogy',         'def.tbl.r2c2': 'Blueprint / Building materials',                     'def.tbl.r2c3': 'Factory floor / Operating system',
+      'def.tbl.r3c1': 'Design Philosophy','def.tbl.r3c2': 'Highly modular, user assembles freely',              'def.tbl.r3c3': 'Opinionated, decisions built-in',
+      'def.tbl.r4c1': 'State Management', 'def.tbl.r4c2': 'Usually stateless or lightweight state',             'def.tbl.r4c3': 'Persistent state, cross-session recovery',
+      'def.tbl.r5c1': 'Safety Controls',  'def.tbl.r5c2': 'Provides tools, does not enforce governance',        'def.tbl.r5c3': 'Built-in policies, tool access mediation, security boundaries',
+      'def.tbl.r6c1': 'Examples',
+      'def.tip': '💡 Key insight: A harness typically <em>uses</em> a framework. LangChain\'s own terminology — LangChain = framework, LangGraph = runtime, DeepAgents = harness.',
+      'comp.tag':  'Core Architecture',
+      'comp.h2':   'The 7 Core Components of a Harness',
+      'comp.desc': 'A production-grade agent harness must cover 7 dimensions. Each one solves a problem the model itself cannot.',
+      'comp.c1': 'Manages what the agent sees and remembers. Covers working context (current turn), session state (current task), long-term memory (cross-task), and context compaction strategies.',
+      'comp.c2': 'Manages tool access and execution. Includes controlled access (filesystem, APIs, shell, databases), parameter validation, sandboxed execution, and output sanitization. Tools should be atomic operations.',
+      'comp.c3': 'Guardrails that ensure output quality. Combines deterministic rules (linters, CI/CD) with AI-driven verification (agents reviewing agents). Treats failures as systemic issues to fix permanently.',
+      'comp.c4': 'State persistence across steps and sessions. Covers progress tracking (JSON/files), session recovery (resume after interruption), and semantic retrieval (RAG patterns). Solves the "AI amnesia" problem.',
+      'comp.c5': 'Tracks every tool call, decision, and token usage. Clusters error patterns to identify systemic issues. Monitors costs, enables KV-cache optimization (can reduce costs 10×).',
+      'comp.c6': 'Human-machine interaction controls and safety mechanisms. Operations are classified into safe/moderate/dangerous tiers. Critical operations require human approval. Provides controlled escalation.',
+      'comp.c7':   'The community\'s standard mental model, dividing harness design into three nested loops:',
+      'comp.c7h3': 'Architectural Patterns — Three-Loop Model',
+      'comp.loop.outer.h4': 'Project Level — Outer Loop',
+      'comp.loop.outer.p':  'Captures intent (specs, architecture docs, knowledge base) + governance mechanisms (prevents codebase decay)',
+      'comp.loop.mid.h4':   'Orchestration Level — Middle Loop',
+      'comp.loop.mid.p':    'Each feature needs a complete plan (requirements, design, task breakdown); validation must pass before moving to the next task',
+      'comp.loop.inner.h4': 'Task Level — Inner Loop',
+      'comp.loop.inner.p':  'Write code → verify → error feedback → retry. The structure of this loop determines whether the agent outputs working code or "confident garbage"',
+      'tl.tag':  'Historical Evolution',
+      'tl.h2':   'From Prompt to Harness',
+      'tl.desc': 'Three eras of AI engineering practice — each solving the problems left by the previous one.',
+      'tl.t1.title': 'Prompt Engineering Era',
+      'tl.t1.desc':  'Optimizing single-turn input prompts. Effective but limited — unable to solve agent reliability in multi-step tasks.',
+      'tl.t2.title': 'Context Engineering Era',
+      'tl.t3.title': 'Implicit Practice Phase',
+      'tl.t4.title': 'Concept Formalization',
+      'tl.t5.title': 'Systematization Phase (Current)',
+      'tl.t6.title': 'Standardization Forecast',
+      'tl.t6.desc':  'AaaS platforms, Semantic Graphs, model commoditization. The harness becomes the primary engineering artifact; models are just commodity components within it.',
+      'tl.catalyst.h3':    'Catalyst: OpenAI\'s Million-Line Code Experiment',
+      'tl.catalyst.p1':    'In early 2026, OpenAI used Codex to generate approximately one million lines of code — including application logic, infrastructure, toolchains, documentation, and internal dev tools.',
+      'tl.catalyst.p2':    'Even the AGENTS.md guidance file itself was written by Codex.',
+      'tl.catalyst.p3':    'Core insight: model capability is no longer the bottleneck. Harness design — not the model — determines whether an agent succeeds in production.',
+      'tl.catalyst.label': 'Key Quantitative Data',
+      'tl.catalyst.metric':'Harness design improvements only (no model weight changes):<br><strong>Coding benchmark accuracy: 6.7% → 68.3%</strong><br><span style="color:#92400e;">(Can.ac + LangChain experiment)</span>',
+      'ind.tag':       'Industry Practice',
+      'ind.h2':        'Harness Practices at Major Organizations',
+      'ind.desc':      'How Anthropic, OpenAI, LangChain, and others define and implement Harness Engineering.',
+      'ind.community': 'Community & Academia',
+      'qt.tag':  'Key Insights',
+      'qt.h2':   'Industry Perspectives',
+      'qt.desc': 'Critical judgments from OpenAI, Anthropic, and community practitioners.',
+      'qt.q1.src': '<strong>OpenAI + Stripe</strong> — Engineering practice validation',
+      'qt.q3.src': '<strong>Community consensus</strong> — r/ClaudeCode, 2026',
+      'rpt.badge': '📖 Full Research Report',
+      'rpt.h3':   'Harness Engineering Survey Report',
+      'rpt.desc': 'A comprehensive survey based on 8 rounds of deep web research, covering academic papers, industry practice, open-source community, and future trends.',
+      'rpt.toc1': 'Origins & History (Mitchell Hashimoto + OpenAI Experiment)',
+      'rpt.toc2': 'Core Definition & Essential Difference (Framework vs Harness)',
+      'rpt.toc3': 'Academic Progress (arXiv:2603.25723, Tsinghua + HIT)',
+      'rpt.toc4': 'Industry Practice (Anthropic, OpenAI, LangChain)',
+      'rpt.toc5': 'Community Discussion (Reddit/HN, Open-source Tools)',
+      'rpt.toc6': 'shareAI-lab/learn-claude-code: Teaching Implementation vs Original Concept',
+      'rpt.toc7': '7 Core Components Deep Dive',
+      'rpt.toc8': 'Future Direction: Standardization & Trends (2026–2027)',
+      'rpt.stat': 'words · Chinese Survey',
+      'rpt.btn1': '📖 Read Full Report',
+      'rpt.btn2': '⭐ GitHub Repo',
+      'ft.brand':    'A survey on AI Agent infrastructure engineering. Documenting the most important AI engineering paradigm shift of 2026 — from prompt tuning to harness building.',
+      'ft.col1h':    'Content',
+      'ft.col2h':    'Further Reading',
+      'ft.l1':       'Core Definition',
+      'ft.l2':       '7 Components',
+      'ft.l3':       'Origin & History',
+      'ft.l5':       'Full Report',
+      'ft.copy':     '© 2026 Harness Engineering Survey · Research by Warren',
+      'ft.compiled': 'Compiled March 2026 · <a href="./REPORT.md" style="color:var(--gray-500);">Full Report (中文)</a>',
+    }
+  };
+
+  function setLang(lang) {
+    // Apply translations
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const val = TRANSLATIONS[lang][key];
+      if (val !== undefined) el.textContent = val;
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+      const key = el.getAttribute('data-i18n-html');
+      const val = TRANSLATIONS[lang][key];
+      if (val !== undefined) el.innerHTML = val;
+    });
+
+    // Update <html lang>
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+
+    // Update page title
+    document.title = lang === 'zh'
+      ? 'Harness Engineering — AI Agent 基础设施工程'
+      : 'Harness Engineering — AI Agent Infrastructure';
+
+    // Update button states
+    document.getElementById('btnZh').classList.toggle('active', lang === 'zh');
+    document.getElementById('btnEn').classList.toggle('active', lang === 'en');
+
+    // Persist preference
+    localStorage.setItem('lang', lang);
+  }
+
+  // Auto-detect language on load
+  (function initLang() {
+    const saved = localStorage.getItem('lang');
+    if (saved) { setLang(saved); return; }
+    const browserLang = (navigator.language || navigator.userLanguage || 'zh').toLowerCase();
+    const isEnglish = browserLang.startsWith('en') || browserLang.startsWith('fr') || browserLang.startsWith('de') || browserLang.startsWith('es') || browserLang.startsWith('ja') || browserLang.startsWith('ko');
+    setLang(isEnglish ? 'en' : 'zh');
+  })();
 </script>
 </body>
 </html>
